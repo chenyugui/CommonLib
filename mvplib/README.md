@@ -19,3 +19,37 @@
 
 -  Model层<br>
 数据层
+
+
+###其他：
+为了方便各个library的相关构建版本统一，设置了一些通用的全局变量，关于build.gradle的设置，不懂的看如下：<br>
+修改项目目录下gradle.properties文件,添加如下设置：
+```
+# 全局环境配置
+ANDROID_BUILD_SDK_VERSION=25
+ANDROID_BUILD_TOOLS_VERSION=25.0.3
+ANDROID_BUILD_MIN_SDK_VERSION=9
+ANDROID_BUILD_TARGET_SDK_VERSION=25
+SUPPORT_LIBRARY=25.2.0
+```
+
+然后在library和主module的build.gradle文件下可以引用这些全局变量：
+```
+android {
+    compileSdkVersion project.ANDROID_BUILD_SDK_VERSION as int
+    buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
+
+    defaultConfig {
+        minSdkVersion project.ANDROID_BUILD_MIN_SDK_VERSION as int
+        targetSdkVersion project.ANDROID_BUILD_TARGET_SDK_VERSION as int
+        ...
+    }
+    ...
+}
+
+dependencies {
+    ...
+    compile "com.android.support:appcompat-v7:${SUPPORT_LIBRARY}"  // 注意这里把原来的单引号改成双引号
+    compile "com.android.support:recyclerview-v7:${SUPPORT_LIBRARY}"
+}
+```
