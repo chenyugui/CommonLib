@@ -20,7 +20,7 @@ public class MvpBasePresenter<V extends ViewBaseInterface> {
     }
 
     /**
-     * 判断是有与view建立了联系
+     * 判断是否有与view建立了联系
      *
      * @return
      */

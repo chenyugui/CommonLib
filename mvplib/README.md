@@ -6,7 +6,7 @@
 - View层(一般是Activity和Fragment)：<br>
 &emsp;&emsp;视图层，负责视图的展示处理。视图层创建的时候，同时会创建一个presenter，并把自己跟presenter关联（以接口的形式，每个视图层都会implement一个视图层接口）。<br><br>
 &emsp;&emsp;View层基类: MvpBaseActivity、MvpBaseFragment<br>
-实现了一些view层通用的方法，例如显示loadingdialog、showToast。并且写好了在onCreate时创建presenter并关联，在onDestroy时与presenter解除关联。
+实现了一些view层通用的方法，例如showTipDialog、showToast。并且写好了在onCreate时创建presenter并关联，在onDestroy时与presenter解除关联。
 <br>
 &emsp;&emsp;View层接口基类： ViewBaseInterface
 
