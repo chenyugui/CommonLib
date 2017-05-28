@@ -21,6 +21,7 @@ public abstract class MvpBaseFragment<V extends ViewBaseInterface, P extends Mvp
     protected P mPresenter;
     private Dialog tipDialog;
     private Toast mToast;
+    protected View rootView;
 
 
     @Override
@@ -40,6 +41,14 @@ public abstract class MvpBaseFragment<V extends ViewBaseInterface, P extends Mvp
     }
 
     protected abstract P createPresenter();
+
+    protected <T extends View> T findView(int viewID) {
+        return (T) rootView.findViewById(viewID);
+    }
+
+    protected <T extends View> T findView(View view, int viewID) {
+        return (T) view.findViewById(viewID);
+    }
 
     @Override
     public void showShort(String text) {

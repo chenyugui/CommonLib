@@ -37,6 +37,13 @@ public abstract class MvpBaseActivity<V extends ViewBaseInterface, P extends Mvp
 
     protected abstract P createPresenter();
 
+    protected <T extends View> T findView(int viewID) {
+        return (T) findViewById(viewID);
+    }
+
+    protected <T extends View> T findView(View view, int viewID) {
+        return (T) view.findViewById(viewID);
+    }
 
     @Override
     public void showShort(String text) {
