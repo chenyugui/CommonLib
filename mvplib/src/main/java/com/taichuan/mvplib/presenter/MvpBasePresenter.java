@@ -7,6 +7,7 @@ import java.lang.ref.WeakReference;
 /**
  * Created by gui on 2017/5/28.
  * Presenter基类
+ *
  */
 public class MvpBasePresenter<V extends ViewBaseInterface> {
     protected WeakReference<V> mViewWeak;
