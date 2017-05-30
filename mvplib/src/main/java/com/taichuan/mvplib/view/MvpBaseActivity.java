@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,12 +11,13 @@ import android.widget.Toast;
 import com.taichuan.mvplib.R;
 import com.taichuan.mvplib.presenter.MvpBasePresenter;
 import com.taichuan.mvplib.view.viewimpl.ViewBaseInterface;
+import com.zhy.autolayout.AutoLayoutActivity;
 
 /**
  * Created by gui on 2017/5/27.
  * activity View层基类
  */
-public abstract class MvpBaseActivity<V extends ViewBaseInterface, P extends MvpBasePresenter<V>> extends AppCompatActivity implements ViewBaseInterface {
+public abstract class MvpBaseActivity<V extends ViewBaseInterface, P extends MvpBasePresenter<V>> extends AutoLayoutActivity implements ViewBaseInterface {
     protected P mPresenter;
     private Dialog tipDialog;
     private Toast mToast;
