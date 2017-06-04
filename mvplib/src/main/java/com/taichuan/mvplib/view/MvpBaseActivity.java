@@ -8,16 +8,16 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.taichuan.baselib.activity.BaseActivity;
 import com.taichuan.mvplib.R;
 import com.taichuan.mvplib.presenter.MvpBasePresenter;
 import com.taichuan.mvplib.view.viewimpl.ViewBaseInterface;
-import com.zhy.autolayout.AutoLayoutActivity;
 
 /**
  * Created by gui on 2017/5/27.
  * activity View层基类
  */
-public abstract class MvpBaseActivity<V extends ViewBaseInterface, P extends MvpBasePresenter<V>> extends AutoLayoutActivity implements ViewBaseInterface {
+public abstract class MvpBaseActivity<V extends ViewBaseInterface, P extends MvpBasePresenter<V>> extends BaseActivity implements ViewBaseInterface {
     protected P mPresenter;
     private Dialog tipDialog;
     private Toast mToast;
@@ -45,14 +45,15 @@ public abstract class MvpBaseActivity<V extends ViewBaseInterface, P extends Mvp
         return (T) view.findViewById(viewID);
     }
 
-    @Override
-    public void showShort(String text) {
-        if (mToast != null)
-            mToast.setText(text);
-        else
-            mToast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
-        mToast.show();
-    }
+//    @Override
+//    public void showShort(String text) {
+//        if (mToast != null)
+//            mToast.setText(text);
+//        else
+//            mToast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+//        mToast.show();
+//    }
+
 
     @Override
     public void showLong(String text) {

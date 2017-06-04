@@ -2,7 +2,8 @@ package com.taichuan.baselib.activity;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,11 +15,18 @@ import com.taichuan.baselib.R;
  * Created by gui on 2017/5/21.
  * activity基类，实现一些最通用的方法
  */
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends PermissionBaseActivity {
     // TAG有长度限制，23
     protected final String TAG = getClass().getSimpleName().replace("Activity", "Aty");
     private Dialog tipDialog;
     private Toast mToast;
+    protected BaseActivity instance;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        instance = this;
+    }
 
     /**
      * 显示提示对话框
@@ -26,7 +34,7 @@ public class BaseActivity extends AppCompatActivity {
      * @param tipMsg             要提示的内容
      * @param isFinishWhenCancel 当对话框消失时，Activity是否进行finish
      */
-    protected void showTipDialog(String tipMsg, final boolean isFinishWhenCancel) {
+    public void showTipDialog(String tipMsg, final boolean isFinishWhenCancel) {
         if (tipDialog == null) {
             tipDialog = new Dialog(this, R.style.Dialog_No_Border);
             tipDialog.setContentView(R.layout.dialog_tip);
@@ -52,7 +60,7 @@ public class BaseActivity extends AppCompatActivity {
             tipDialog.show();
     }
 
-    protected void showShort(String text) {
+    public void showShort(String text) {
         if (mToast != null)
             mToast.setText(text);
         else
@@ -60,7 +68,7 @@ public class BaseActivity extends AppCompatActivity {
         mToast.show();
     }
 
-    protected void showLong(String text) {
+    public void showLong(String text) {
         if (mToast != null)
             mToast.setText(text);
         else

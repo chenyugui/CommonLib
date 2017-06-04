@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * 此类编写了各种String和Date型的各种格式转换
  *
- * @author 桂
+ * @author gui
  */
 public class StringAndDate {
 
@@ -19,7 +19,7 @@ public class StringAndDate {
     public static Date stringtoDate(String dateString) {
         Date date;
         try {
-            dateformat = new SimpleDateFormat("yy-MM-dd HH:mm:ss");//大写H为24小时制,小写为12小时
+            dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//大写H为24小时制,小写为12小时
             date = dateformat.parse(dateString);
             return date;
         } catch (ParseException e) {
@@ -104,6 +104,11 @@ public class StringAndDate {
         String str_date = dateformat.format(date);
         return str_date;
     }
+    public static String dateToyyyy_MM_dd_HH_mm_ss(Date date) {
+        dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String str_date = dateformat.format(date);
+        return str_date;
+    }
 
     public static String dateToyy_MM_dd_HH_mm(Date date) {
         dateformat = new SimpleDateFormat("yy-MM-dd HH:mm");
@@ -125,6 +130,11 @@ public class StringAndDate {
         String str_date = dateformat.format(date);
         return str_date;
     }
+    public static String dateToMM月dd日(Date date) {
+        dateformat = new SimpleDateFormat("MM月dd日");
+        String str_date = dateformat.format(date);
+        return str_date;
+    }
 
     public static String dateToyy(Date date) {
         SimpleDateFormat dateformat = new SimpleDateFormat("yy");
@@ -143,10 +153,20 @@ public class StringAndDate {
         String str_date = dateformat.format(date);
         return str_date;
     }
+    public static String dateToMMPotindd(Date date) {
+        dateformat = new SimpleDateFormat("MM.dd");
+        String str_date = dateformat.format(date);
+        return str_date;
+    }
 
 
-    public static String dateToWeek(Date date) {
+    public static String dateToWeekEEE(Date date) {
         dateformat = new SimpleDateFormat("EEE");
+        String str_week = dateformat.format(date);
+        return str_week;
+    }
+    public static String dateToWeekEE(Date date) {
+        dateformat = new SimpleDateFormat("EE");
         String str_week = dateformat.format(date);
         return str_week;
     }
@@ -192,12 +212,6 @@ public class StringAndDate {
 
     public static String dateToyyyy_MMdd(Date date) {
         dateformat = new SimpleDateFormat("yyyy-MMdd");
-        String str_date = dateformat.format(date);
-        return str_date;
-    }
-
-    public static String dateToyyyy_MM_dd_HH_mm_ss(Date date) {
-        dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String str_date = dateformat.format(date);
         return str_date;
     }
