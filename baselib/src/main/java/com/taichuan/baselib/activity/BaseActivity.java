@@ -12,7 +12,7 @@ import com.taichuan.baselib.R;
 
 
 /**
- * Created by gui on 2017/5/21.
+ * Created by gui  on 2017/5/21.
  * activity基类，实现一些最通用的方法
  */
 public class BaseActivity extends PermissionBaseActivity {
