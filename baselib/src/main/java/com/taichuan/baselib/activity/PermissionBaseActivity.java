@@ -1,17 +1,19 @@
 package com.taichuan.baselib.activity;
 
+import android.Manifest;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.taichuan.kangqiaolib.R;
+import com.taichuan.baselib.R;
+import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,81 +22,95 @@ import java.util.Map;
  * Created by gui on 2016/11/28.
  * 封装了运行时权限请求的Activity
  */
-public class PermissionBaseActivity extends BaseActivity {
+public class PermissionBaseActivity extends AutoLayoutActivity {
     private final String TAG = "PermissionBaseActivity";
-    private Dialog permissionDialog;
+    private Dialog tipDialog;
     private Map<Integer, OnPermissionResultListener> listenerMap = new HashMap<>();
 
+
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.d(TAG, "onRequestPermissionsResult  permissions.length=" + permissions.length);
+        Log.d(TAG, "onRequestPermissionsResult  grantResults.length=" + grantResults.length);
         OnPermissionResultListener onPermissionResultListener = listenerMap.get(requestCode);
-        if (onPermissionResultListener != null) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                listenerMap.remove(requestCode);
-                onPermissionResultListener.onAllow();
-            } else {
-                listenerMap.remove(requestCode);
-                onPermissionResultListener.onReject();
+        // 循环判断权限，只要有一个拒绝了，则回调onReject()。 全部允许时才回调onAllow()
+        for (int i = 0; i < grantResults.length; i++) {
+            listenerMap.remove(requestCode);
+            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {// 拒绝权限
+                // 如果应用之前请求过此权限但用户拒绝了请求，此方法将返回 true。
+                // 注：如果用户在过去拒绝了权限请求，并在权限请求系统对话框中选择了 "不再提醒" 选项，此方法将返回 false。
+                // 如果用户第一次申请权限，此方法返回false
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
+                    // 拒绝选了"不再提醒"，一般提示跳转到权限设置页面
+                }
+                showTipDialog(permissions[i], onPermissionResultListener);
+                return;
             }
         }
+        onPermissionResultListener.onAllow();
     }
 
-    public void checkPermission(final String permission, String notifyMsg, OnPermissionResultListener onPermissionResultListener) {
-        // 检查是否有权限
-        if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {// 没有权限
-            // 检查之前是否拒绝过该权限（不管是否设置了“不再提醒”，只要拒绝过，就会触发该方法）
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {//之前还没有拒绝过，直接申请权限
-                int size = listenerMap.size();
-                if (onPermissionResultListener != null) {
-                    listenerMap.put(size, onPermissionResultListener);
-                }
-                ActivityCompat.requestPermissions(this, new String[]{permission}, size);
-            } else { // 之前拒绝过该权限
-                // 弹出自定义对话框，说明这里需要某某权限
-                showPermissionDialog(this, notifyMsg, permission, onPermissionResultListener);
-            }
-        } else {
+    public void checkPermissions(final String[] permissions, OnPermissionResultListener onPermissionResultListener) {
+        if (Build.VERSION.SDK_INT < 23 || permissions.length == 0) {
             if (onPermissionResultListener != null)
                 onPermissionResultListener.onAllow();
+        } else {
+            int size = listenerMap.size();
+            if (onPermissionResultListener != null) {
+                listenerMap.put(size, onPermissionResultListener);
+            }
+            ActivityCompat.requestPermissions(this, permissions, size);
         }
     }
 
-    private void showPermissionDialog(Context context, String msg, final String permission, final OnPermissionResultListener onPermissionResultListener) {
-        if (permissionDialog != null) {
-            permissionDialog.cancel();
-            permissionDialog = null;
+    private void showTipDialog(String permisssion, final OnPermissionResultListener onPermissionResultListener) {
+        if (tipDialog == null) {
+            tipDialog = new Dialog(this, R.style.Dialog_No_Border);
+            View permissionDialogRootView = LayoutInflater.from(this).inflate(R.layout.dialog_nide_permission, null, true);
+            // 按钮
+            permissionDialogRootView.findViewById(R.id.rltOK).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tipDialog.cancel();
+                }
+            });
+            //
+            tipDialog.setContentView(permissionDialogRootView);
         }
-        permissionDialog = new Dialog(context, R.style.Dialog_No_Border);
-        permissionDialog.setCanceledOnTouchOutside(false);
-        View permissionDialogRootView = LayoutInflater.from(context).inflate(R.layout.dialog_nide_permission, null, true);
-        permissionDialog.setContentView(permissionDialogRootView);
-        permissionDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        tipDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                int size = listenerMap.size();
-                if (onPermissionResultListener != null) {
-                    listenerMap.put(size, onPermissionResultListener);
-                }
-                ActivityCompat.requestPermissions(PermissionBaseActivity.this, new String[]{permission}, size);
+                onPermissionResultListener.onReject();
             }
         });
-        TextView textView = (TextView) permissionDialogRootView.findViewById(R.id.tvNotify);
-        textView.setText(msg);
-        permissionDialogRootView.findViewById(R.id.rltOK).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                permissionDialog.cancel();
-            }
-        });
-        permissionDialog.show();
+        TextView textView = (TextView) tipDialog.findViewById(R.id.tvNotify);
+        textView.setText(getTip(permisssion));
+        tipDialog.show();
+    }
+
+    private String getTip(String permission) {
+        if (permission.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE) || permission.equals(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            return "这里需要存储权限才可使用";
+        } else if (permission.equals(Manifest.permission.CAMERA)) {
+            return "这里需要相机权限才可使用";
+        } else if (permission.equals(Manifest.permission.CALL_PHONE)) {
+            return "这里需要使用电话权限才可使用";
+        } else if (permission.equals(Manifest.permission.RECORD_AUDIO)) {
+            return "这里需要麦克风权限才可使用";
+        } else if (permission.equals(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            return "这里需要获取位置权限才可使用";
+        } else {
+            return "这里需要权限才可使用";
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (permissionDialog != null) {
-            permissionDialog.cancel();
-            permissionDialog = null;
+        if (tipDialog != null) {
+            tipDialog.cancel();
+            tipDialog = null;
         }
         listenerMap.clear();
         listenerMap = null;
