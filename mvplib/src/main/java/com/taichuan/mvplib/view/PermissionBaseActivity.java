@@ -1,4 +1,4 @@
-package com.taichuan.baselib.activity;
+package com.taichuan.mvplib.view;
 
 import android.Manifest;
 import android.app.Dialog;
@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.taichuan.baselib.R;
+import com.taichuan.mvplib.R;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.util.HashMap;
