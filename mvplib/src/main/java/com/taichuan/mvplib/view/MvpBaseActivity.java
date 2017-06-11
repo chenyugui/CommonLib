@@ -1,7 +1,9 @@
 package com.taichuan.mvplib.view;
 
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -90,5 +92,13 @@ public abstract class MvpBaseActivity<V extends ViewBaseInterface, P extends Mvp
         tv_tip.setText(tipMsg);
         if (!this.isFinishing())
             tipDialog.show();
+    }
+
+    public void toActivity(Class activityClass, boolean isFinish) {
+        Intent it = new Intent();
+        it.setComponent(new ComponentName(this, activityClass));
+        startActivity(it);
+        if (isFinish)
+            finish();
     }
 }

@@ -1,5 +1,8 @@
 package com.taichuan.mvplib.presenter;
 
+import android.os.Handler;
+import android.os.Message;
+
 import com.taichuan.mvplib.view.viewimpl.ViewBaseInterface;
 
 import java.lang.ref.WeakReference;
@@ -7,12 +10,26 @@ import java.lang.ref.WeakReference;
 /**
  * Created by gui on 2017/5/28.
  * Presenter基类
- *
  */
 public class MvpBasePresenter<V extends ViewBaseInterface> {
-    protected WeakReference<V> mViewWeak;
+    private WeakReference<V> mViewWeak;
+    protected MyHandler mHandler;
 
-    public MvpBasePresenter() {
+    protected static class MyHandler extends Handler {
+        private WeakReference<MvpBasePresenter> weak;
+
+        public MyHandler(MvpBasePresenter mvpBasePresenter) {
+            weak = new WeakReference<>(mvpBasePresenter);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            weak.get().handleMessage(msg);
+        }
+    }
+
+    protected void handleMessage(Message msg) {
 
     }
 
@@ -22,8 +39,6 @@ public class MvpBasePresenter<V extends ViewBaseInterface> {
 
     /**
      * 判断是否有与view建立了联系
-     *
-     * @return
      */
     public boolean isViewAttached() {
         return mViewWeak != null && mViewWeak.get() != null;
