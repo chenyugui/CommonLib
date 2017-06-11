@@ -1,4 +1,4 @@
-package com.taichuan.baselib.util;
+package com.taichuan.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,7 +9,7 @@ import java.util.Date;
  *
  * @author gui
  */
-public class StringAndDate {
+public class TimeUtil {
 
     private static SimpleDateFormat dateformat;
 

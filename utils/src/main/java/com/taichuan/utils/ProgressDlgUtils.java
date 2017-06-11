@@ -1,11 +1,9 @@
-package com.taichuan.baselib.util;
+package com.taichuan.utils;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.widget.TextView;
-
-import com.taichuan.baselib.R;
 
 
 public class ProgressDlgUtils {

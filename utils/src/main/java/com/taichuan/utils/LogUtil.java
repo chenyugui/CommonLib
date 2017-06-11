@@ -1,4 +1,4 @@
-package com.taichuan.baselib.util;
+package com.taichuan.utils;
 
 import android.util.Log;
 
@@ -51,6 +51,6 @@ public class LogUtil {
     }
 
     private static boolean isDebug() {
-        return GlobalUtil.isDebug;
+        return true;
     }
 }

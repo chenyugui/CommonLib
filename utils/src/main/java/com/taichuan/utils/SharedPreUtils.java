@@ -1,4 +1,4 @@
-package com.taichuan.baselib.util;
+package com.taichuan.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
