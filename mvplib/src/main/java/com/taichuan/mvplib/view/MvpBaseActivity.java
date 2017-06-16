@@ -19,6 +19,7 @@ import com.taichuan.mvplib.view.viewimpl.ViewBaseInterface;
  * activity View层基类
  */
 public abstract class MvpBaseActivity<V extends ViewBaseInterface, P extends MvpBasePresenter<V>> extends PermissionBaseActivity implements ViewBaseInterface {
+    protected final String TAG = getClass().getSimpleName().replace("Activity", "Aty");
     protected MvpBaseActivity instance;
     protected P mPresenter;
     private Dialog tipDialog;
