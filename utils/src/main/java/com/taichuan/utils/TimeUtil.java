@@ -2,6 +2,7 @@ package com.taichuan.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -10,8 +11,142 @@ import java.util.Date;
  * @author gui
  */
 public class TimeUtil {
-
     private static SimpleDateFormat dateformat;
+    private static Calendar calendar;
+
+
+    /**
+     * 获取今年一月一号0点的时间戳
+     */
+    public static long getTimeStampOfFirstDayOfYear() {
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_YEAR, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime().getTime();
+    }
+
+    /**
+     * 获取今天最后一天23点59分59秒的时间戳
+     */
+    public static long getTimeStamp24OfLastDayOfYear() {
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_YEAR, calendar.getActualMaximum(Calendar.DAY_OF_YEAR));
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+        return calendar.getTime().getTime();
+    }
+
+    /**
+     * 获取本月1号0点的时间戳
+     */
+    public static long getTimeStampOfFirstDayOfMonth() {
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime().getTime();
+    }
+
+    /**
+     * 获取本月最后一天23点59分59秒的时间戳
+     */
+    public static long getTimeStamp24OfLastDayOfMonth() {
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+        return calendar.getTime().getTime();
+    }
+
+    /**
+     * 获取本周第一天0点的时间戳
+     */
+    public static long getTimeStampOfFirstDayOfWeek() {
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_WEEK, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime().getTime();
+    }
+
+    /**
+     * 获取本周最后一天23点59分59秒的时间戳
+     */
+    public static long getTimeStamp24OfLastDayOfWeek() {
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_WEEK, 7);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+        return calendar.getTime().getTime();
+    }
+
+    /**
+     * 获取今天0点的时间戳
+     */
+    public static long getTimeStampOfZeroOfToday() {
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime().getTime();
+    }
+
+    /**
+     * 获取今天0点的时间戳
+     */
+    public static long getTimeStamp24OfToday() {
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+        return calendar.getTime().getTime();
+    }
+
+    /**
+     * 获取本月第指定周的最后一天的23点59分59秒的时间戳
+     *
+     * @param whichWeek 第几周
+     */
+    public static long getTimeStamp24OfLastDayOfWhichWeekOfMonth(int whichWeek) {
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.WEEK_OF_MONTH, whichWeek);
+        calendar.set(Calendar.DAY_OF_WEEK, 7);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+        return calendar.getTime().getTime();
+    }
+
+
+    /**
+     * 获取本月指定周的第一天0点的时间戳，例如传2，表示获取本月第二个星期的第一天
+     */
+    public static long getTimeStampOfFirstDayOfWhichWeekOfMonth(int i) {
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.WEEK_OF_MONTH, i);
+        calendar.set(Calendar.DAY_OF_WEEK, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime().getTime();
+    }
 
     /**
      * yy-MM-dd HH:mm:ss
