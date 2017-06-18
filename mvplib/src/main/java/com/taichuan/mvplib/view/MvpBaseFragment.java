@@ -17,6 +17,7 @@ import com.taichuan.mvplib.view.viewimpl.ViewBaseInterface;
  * fragment View层基类
  */
 public abstract class MvpBaseFragment<V extends ViewBaseInterface, P extends MvpBasePresenter> extends Fragment implements ViewBaseInterface {
+    protected final String TAG = getClass().getSimpleName().replace("Fragment", "Fra");
     // Presenter对象
     protected P mPresenter;
     private Dialog tipDialog;

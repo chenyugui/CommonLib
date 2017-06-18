@@ -12,7 +12,7 @@ import java.lang.ref.WeakReference;
  * Presenter基类
  */
 public class MvpBasePresenter<V extends ViewBaseInterface> {
-    protected final String TAG = getClass().getSimpleName().replace("Presenter", "pre");
+    protected final String TAG = getClass().getSimpleName().replace("Presenter", "Pre");
     private WeakReference<V> mViewWeak;
     protected MyHandler mHandler;
 
