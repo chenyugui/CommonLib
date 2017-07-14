@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="100dp"
     android:layout_height="100dp"
-    android:background="@color/them_color"
+    android:background="@color/themeColor"
     xmlns:tool="http://schemas.android.com/tools"
     android:gravity="center">
 
