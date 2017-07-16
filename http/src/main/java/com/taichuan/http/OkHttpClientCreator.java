@@ -10,7 +10,7 @@ import okhttp3.OkHttpClient;
  */
 public class OkHttpClientCreator {
     private OkHttpClient okHttpClient;
-    private static final int CONNECT_TIMEOUT_SECONDS = 30;
+    private static final int CONNECT_TIMEOUT_SECONDS = 5;
 
     private OkHttpClientCreator() {
         okHttpClient = new OkHttpClient.Builder()
