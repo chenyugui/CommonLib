@@ -1,5 +1,6 @@
 package com.taichuan.http;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.taichuan.http.callback.IError;
@@ -7,6 +8,8 @@ import com.taichuan.http.callback.IFailure;
 import com.taichuan.http.callback.IRequest;
 import com.taichuan.http.callback.ISuccess;
 import com.taichuan.http.callback.RequestCallbacks;
+import com.taichuan.uilibrary.avloading.AVLoadingUtil;
+import com.taichuan.uilibrary.avloading.LoadingStyle;
 
 import java.util.WeakHashMap;
 
@@ -26,6 +29,10 @@ public final class RestClient {
     private final IFailure FAILURE;
     private final IError ERROR;
     private final RequestBody BODY;
+    private final Boolean IS_SHOW_LOADING;
+    private final Context CONTEXT;
+    private final LoadingStyle LOADING_STYLE;
+    private final Boolean LOADING_CANCELABLE;
 
     RestClient(String url,
                WeakHashMap<String, Object> params,
@@ -33,7 +40,11 @@ public final class RestClient {
                ISuccess success,
                IFailure failure,
                IError error,
-               RequestBody body) {
+               RequestBody body,
+               boolean isShowLoading,
+               Context context,
+               LoadingStyle loadingStyle,
+               boolean isDialogCancelable) {
         this.URL = url;
         this.PARAMS = params;
         this.REQUEST = request;
@@ -41,12 +52,15 @@ public final class RestClient {
         this.FAILURE = failure;
         this.ERROR = error;
         this.BODY = body;
+        this.IS_SHOW_LOADING = isShowLoading;
+        this.CONTEXT = context;
+        this.LOADING_STYLE = loadingStyle;
+        this.LOADING_CANCELABLE = isDialogCancelable;
     }
 
     public static RestClientBuilder builder() {
         return new RestClientBuilder();
     }
-
 
     private void request(HttpMethod method) {
         if (REQUEST != null)
@@ -64,6 +78,14 @@ public final class RestClient {
                 break;
         }
         if (call != null) {
+            // Loading Dialog
+            if (IS_SHOW_LOADING && CONTEXT != null) {
+                if (LOADING_STYLE == null) {
+                    AVLoadingUtil.showLoading(CONTEXT, LOADING_CANCELABLE);
+                } else {
+                    AVLoadingUtil.showLoading(CONTEXT, LOADING_STYLE, LOADING_CANCELABLE);
+                }
+            }
             Log.d(TAG, "request: HttpMethod=" + method.name() + "\nURL=" + URL + "\nPARAMS=" + PARAMS.toString());
             call.enqueue(getRequestCallback());
         }
@@ -129,8 +151,8 @@ public final class RestClient {
                 REQUEST,
                 SUCCESS,
                 FAILURE,
-                ERROR
+                ERROR,
+                IS_SHOW_LOADING
         );
     }
-
 }

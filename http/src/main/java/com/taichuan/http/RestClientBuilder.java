@@ -1,9 +1,13 @@
 package com.taichuan.http;
 
+import android.content.Context;
+
 import com.taichuan.http.callback.IError;
 import com.taichuan.http.callback.IFailure;
 import com.taichuan.http.callback.IRequest;
 import com.taichuan.http.callback.ISuccess;
+import com.taichuan.uilibrary.avloading.AVLoadingUtil;
+import com.taichuan.uilibrary.avloading.LoadingStyle;
 
 import java.util.WeakHashMap;
 
@@ -23,6 +27,11 @@ public final class RestClientBuilder {
     private IFailure mIFailure = null;
     private IError mIError = null;
     private RequestBody mBody = null;
+    private boolean isShowLoading = false;
+    private Context mContext;
+    private LoadingStyle mLoadingStyle = null;
+    private boolean mLoadingCancelable = AVLoadingUtil.default_cancelable;
+
 
     public RestClientBuilder() {
     }
@@ -70,6 +79,44 @@ public final class RestClientBuilder {
         return this;
     }
 
+    /**
+     * 配置请求中的对话框
+     */
+    public final RestClientBuilder loading(Context context, LoadingStyle loadingStyle, boolean cancelable) {
+        this.isShowLoading = true;
+        this.mContext = context;
+        this.mLoadingStyle = loadingStyle;
+        this.mLoadingCancelable = cancelable;
+        return this;
+    }
+
+    /**
+     * 配置请求中的对话框
+     */
+    public final RestClientBuilder loading(Context context, LoadingStyle loadingStyle) {
+        this.isShowLoading = true;
+        this.mContext = context;
+        this.mLoadingStyle = loadingStyle;
+        return this;
+    }
+
+    /**
+     * 配置请求中的对话框 （默认样式）
+     */
+    public final RestClientBuilder loading(Context context, boolean cancelable) {
+        this.mContext = context;
+        this.mLoadingCancelable = cancelable;
+        return this;
+    }
+
+    /**
+     * 配置请求中的对话框 （默认样式）
+     */
+    public final RestClientBuilder loading(Context context) {
+        this.mContext = context;
+        return this;
+    }
+
 
     public final RestClient build() {
         return new RestClient(mUrl,
@@ -78,6 +125,10 @@ public final class RestClientBuilder {
                 mISuccess,
                 mIFailure,
                 mIError,
-                mBody);
+                mBody,
+                isShowLoading,
+                mContext,
+                mLoadingStyle,
+                mLoadingCancelable);
     }
 }
