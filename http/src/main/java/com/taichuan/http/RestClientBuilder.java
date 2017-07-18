@@ -41,6 +41,7 @@ public final class RestClientBuilder {
         return this;
     }
 
+    @SuppressWarnings("unused")
     public final RestClientBuilder params(WeakHashMap<String, Object> params) {
         mParams = params;
         return this;
@@ -82,6 +83,7 @@ public final class RestClientBuilder {
     /**
      * 配置请求中的对话框
      */
+    @SuppressWarnings("unused")
     public final RestClientBuilder loading(Context context, LoadingStyle loadingStyle, boolean cancelable) {
         this.isShowLoading = true;
         this.mContext = context;
@@ -93,6 +95,7 @@ public final class RestClientBuilder {
     /**
      * 配置请求中的对话框
      */
+    @SuppressWarnings("unused")
     public final RestClientBuilder loading(Context context, LoadingStyle loadingStyle) {
         this.isShowLoading = true;
         this.mContext = context;
@@ -103,6 +106,7 @@ public final class RestClientBuilder {
     /**
      * 配置请求中的对话框 （默认样式）
      */
+    @SuppressWarnings("unused")
     public final RestClientBuilder loading(Context context, boolean cancelable) {
         this.mContext = context;
         this.mLoadingCancelable = cancelable;
@@ -112,6 +116,7 @@ public final class RestClientBuilder {
     /**
      * 配置请求中的对话框 （默认样式）
      */
+    @SuppressWarnings("unused")
     public final RestClientBuilder loading(Context context) {
         this.mContext = context;
         return this;

@@ -12,39 +12,50 @@ import android.widget.Toast;
 
 import com.taichuan.mvplib.R;
 import com.taichuan.mvplib.presenter.MvpBasePresenter;
+import com.taichuan.mvplib.view.support.MySupportActivity;
 import com.taichuan.mvplib.view.viewimpl.ViewBaseInterface;
 
 /**
  * Created by gui on 2017/5/27.
  * activity View层基类
  */
-public abstract class MvpBaseActivity<V extends ViewBaseInterface, P extends MvpBasePresenter<V>> extends PermissionBaseActivity implements ViewBaseInterface {
-    protected final String TAG = getClass().getSimpleName().replace("Activity", "Aty");
+public abstract class MvpBaseActivity<V extends ViewBaseInterface, P extends MvpBasePresenter<V>>
+        extends MySupportActivity
+        implements ViewBaseInterface {
+    @SuppressWarnings("unused")
+    protected final String TAG = getClass().getSimpleName().replace("Activity", "Act");
     protected MvpBaseActivity instance;
     protected P mPresenter;
     private Dialog tipDialog;
     private Toast mToast;
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         instance = this;
         mPresenter = createPresenter();
-        mPresenter.attachView((V) this);
+        if (mPresenter != null) {
+            mPresenter.attachView((V) this);
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPresenter.detachView();
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
     }
 
     protected abstract P createPresenter();
 
+    @SuppressWarnings({"unchecked", "unused"})
     protected <T extends View> T findView(int viewID) {
         return (T) findViewById(viewID);
     }
 
+    @SuppressWarnings({"unchecked", "unused"})
     protected <T extends View> T findView(View view, int viewID) {
         return (T) view.findViewById(viewID);
     }
@@ -95,6 +106,7 @@ public abstract class MvpBaseActivity<V extends ViewBaseInterface, P extends Mvp
             tipDialog.show();
     }
 
+    @SuppressWarnings("unused")
     public void toActivity(Class activityClass, boolean isFinish) {
         Intent it = new Intent();
         it.setComponent(new ComponentName(this, activityClass));

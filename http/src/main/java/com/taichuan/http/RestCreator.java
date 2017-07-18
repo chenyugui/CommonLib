@@ -7,7 +7,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  * RESTful请求创建者
  */
 public final class RestCreator<T> {
-    public static String baseUrl;
+    private static String baseUrl;
 
     private RestCreator() {
     }
@@ -17,6 +17,10 @@ public final class RestCreator<T> {
             throw new RuntimeException("baseUrl is null");
         }
         return RestServiceHolder.INSTANCE;
+    }
+
+    public static void setBaseUrl(String url) {
+        baseUrl = url;
     }
 
 
