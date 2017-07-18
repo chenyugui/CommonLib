@@ -4,9 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
-
-import com.taichuan.mvplib.view.PermissionBaseActivity;
 
 import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportActivity;
@@ -16,10 +15,13 @@ import me.yokeyword.fragmentation.SupportHelper;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 /**
- * Created by gui on 2017/7/17.
+ * Base class for activities that use the support-based
+ * {@link ISupportActivity} and
+ * {@link AppCompatActivity} APIs.
+ *
+ * Created by YoKey on 17/6/20.
  */
-
-public class MySupportActivity extends PermissionBaseActivity implements ISupportActivity {
+public class SupportActivity extends AppCompatActivity implements ISupportActivity {
     final SupportActivityDelegate mDelegate = new SupportActivityDelegate(this);
 
     @Override
@@ -99,15 +101,6 @@ public class MySupportActivity extends PermissionBaseActivity implements ISuppor
     }
 
     /**
-     * 当Fragment根布局 没有 设定background属性时,
-     * Fragmentation默认使用Theme的android:windowbackground作为Fragment的背景,
-     * 可以通过该方法改变其内所有Fragment的默认背景。
-     */
-    public void setDefaultFragmentBackground(@DrawableRes int backgroundRes) {
-        mDelegate.setDefaultFragmentBackground(backgroundRes);
-    }
-
-    /**
      * Set all fragments animation.
      * 构建Fragment转场动画
      * <p/>
@@ -123,15 +116,22 @@ public class MySupportActivity extends PermissionBaseActivity implements ISuppor
 
     /****************************************以下为可选方法(Optional methods)******************************************************/
 
-    // 选择性拓展其他方法
+    /**
+     * 加载根Fragment, 即Activity内的第一个Fragment 或 Fragment内的第一个子Fragment
+     *
+     * @param containerId 容器id
+     * @param toFragment  目标Fragment
+     */
     public void loadRootFragment(int containerId, @NonNull ISupportFragment toFragment) {
         mDelegate.loadRootFragment(containerId, toFragment);
     }
 
+    public void loadRootFragment(int containerId, ISupportFragment toFragment, boolean addToBackStack, boolean allowAnimation) {
+        mDelegate.loadRootFragment(containerId, toFragment, addToBackStack, allowAnimation);
+    }
+
     /**
      * 加载多个同级根Fragment,类似Wechat, QQ主页的场景
-     *
-     * @param showPosition 要显示第几个Fragment
      */
     public void loadMultipleRootFragment(int containerId, int showPosition, ISupportFragment... toFragments) {
         mDelegate.loadMultipleRootFragment(containerId, showPosition, toFragments);
@@ -161,7 +161,7 @@ public class MySupportActivity extends PermissionBaseActivity implements ISuppor
     }
 
     /**
-     * @param launchMode Same as Activity's LaunchMode.
+     * @param launchMode Similar to Activity's LaunchMode.
      */
     public void start(ISupportFragment toFragment, @ISupportFragment.LaunchMode int launchMode) {
         mDelegate.start(toFragment, launchMode);
@@ -185,7 +185,6 @@ public class MySupportActivity extends PermissionBaseActivity implements ISuppor
         mDelegate.replaceFragment(toFragment, addToBackStack);
     }
 
-
     /**
      * Pop the fragment.
      */
@@ -196,6 +195,11 @@ public class MySupportActivity extends PermissionBaseActivity implements ISuppor
     /**
      * Pop the last fragment transition from the manager's fragment
      * back stack.
+     *
+     * 出栈到目标fragment
+     *
+     * @param targetFragmentClass   目标fragment
+     * @param includeTargetFragment 是否包含该fragment
      */
     public void popTo(Class<?> targetFragmentClass, boolean includeTargetFragment) {
         mDelegate.popTo(targetFragmentClass, includeTargetFragment);
@@ -211,6 +215,15 @@ public class MySupportActivity extends PermissionBaseActivity implements ISuppor
 
     public void popTo(Class<?> targetFragmentClass, boolean includeTargetFragment, Runnable afterPopTransactionRunnable, int popAnim) {
         mDelegate.popTo(targetFragmentClass, includeTargetFragment, afterPopTransactionRunnable, popAnim);
+    }
+
+    /**
+     * 当Fragment根布局 没有 设定background属性时,
+     * Fragmentation默认使用Theme的android:windowbackground作为Fragment的背景,
+     * 可以通过该方法改变其内所有Fragment的默认背景。
+     */
+    public void setDefaultFragmentBackground(@DrawableRes int backgroundRes) {
+        mDelegate.setDefaultFragmentBackground(backgroundRes);
     }
 
     /**

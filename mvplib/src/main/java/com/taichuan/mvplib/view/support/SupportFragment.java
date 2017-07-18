@@ -1,6 +1,7 @@
 package com.taichuan.mvplib.view.support;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,11 +16,13 @@ import me.yokeyword.fragmentation.SupportHelper;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 /**
- * Created by gui on 2017/7/17.
+ * Base class for activities that use the support-based
+ * {@link ISupportFragment} and
+ * {@link Fragment} APIs.
+ * Created by YoKey on 17/6/22.
  */
-public class MySupportFragment extends Fragment implements ISupportFragment {
+public class SupportFragment extends Fragment implements ISupportFragment {
     final SupportFragmentDelegate mDelegate = new SupportFragmentDelegate(this);
-    protected View rootView;
     protected FragmentActivity _mActivity;
 
     @Override
@@ -105,7 +108,7 @@ public class MySupportFragment extends Fragment implements ISupportFragment {
     /**
      * If you want to call the start()/pop()/showHideFragment() on the onCreateXX/onActivityCreated,
      * call this method to deliver the transaction to the queue.
-     * <p>
+     *
      * 在onCreate/onCreateView/onActivityCreated中使用 start()/pop()/showHideFragment(),请使用该方法把你的任务入队
      *
      * @param runnable start() , pop() or showHideFragment()
@@ -201,6 +204,13 @@ public class MySupportFragment extends Fragment implements ISupportFragment {
         return mDelegate.onBackPressedSupport();
     }
 
+    /**
+     * 类似 {@link Activity#setResult(int, Intent)}
+     *
+     * Similar to {@link Activity#setResult(int, Intent)}
+     *
+     * @see #startForResult(ISupportFragment, int)
+     */
     @Override
     public void setFragmentResult(int resultCode, Bundle bundle) {
         mDelegate.setFragmentResult(resultCode, bundle);
@@ -208,7 +218,7 @@ public class MySupportFragment extends Fragment implements ISupportFragment {
 
     /**
      * 类似  {@link Activity#onActivityResult(int, int, Intent)}
-     * <p>
+     *
      * Similar to {@link Activity#onActivityResult(int, int, Intent)}
      *
      * @see #startForResult(ISupportFragment, int)
@@ -221,11 +231,12 @@ public class MySupportFragment extends Fragment implements ISupportFragment {
     /**
      * 在start(TargetFragment,LaunchMode)时,启动模式为SingleTask/SingleTop, 回调TargetFragment的该方法
      * 类似 {@link Activity#onNewIntent(Intent)}
-     * <p>
+     *
      * Similar to {@link Activity#onNewIntent(Intent)}
      *
-     * @param args putNewBundle(Bundle newBundle)
      * @see #start(ISupportFragment, int)
+     *
+     * @param args putNewBundle(Bundle newBundle)
      */
     @Override
     public void onNewBundle(Bundle args) {
@@ -244,7 +255,6 @@ public class MySupportFragment extends Fragment implements ISupportFragment {
 
 
     /****************************************以下为可选方法(Optional methods)******************************************************/
-    // 自定制Support时，可移除不必要的方法
 
     /**
      * 隐藏软键盘
@@ -281,7 +291,6 @@ public class MySupportFragment extends Fragment implements ISupportFragment {
         mDelegate.loadMultipleRootFragment(containerId, showPosition, toFragments);
     }
 
-
     /**
      * show一个Fragment,hide其他同栈所有Fragment
      * 使用该方法时，要确保同级栈内无多余的Fragment,(只有通过loadMultipleRootFragment()载入的Fragment)
@@ -300,7 +309,6 @@ public class MySupportFragment extends Fragment implements ISupportFragment {
     public void showHideFragment(ISupportFragment showFragment, ISupportFragment hideFragment) {
         mDelegate.showHideFragment(showFragment, hideFragment);
     }
-
 
     public void start(ISupportFragment toFragment) {
         mDelegate.start(toFragment);
@@ -342,11 +350,10 @@ public class MySupportFragment extends Fragment implements ISupportFragment {
         mDelegate.popChild();
     }
 
-
     /**
      * Pop the last fragment transition from the manager's fragment
      * back stack.
-     * <p>
+     *
      * 出栈到目标fragment
      *
      * @param targetFragmentClass   目标fragment
@@ -355,7 +362,6 @@ public class MySupportFragment extends Fragment implements ISupportFragment {
     public void popTo(Class<?> targetFragmentClass, boolean includeTargetFragment) {
         mDelegate.popTo(targetFragmentClass, includeTargetFragment);
     }
-
 
     /**
      * If you want to begin another FragmentTransaction immediately after popTo(), use this method.
