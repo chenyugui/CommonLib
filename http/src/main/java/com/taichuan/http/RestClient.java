@@ -8,6 +8,7 @@ import com.taichuan.http.callback.IFailure;
 import com.taichuan.http.callback.IRequest;
 import com.taichuan.http.callback.ISuccess;
 import com.taichuan.http.callback.RequestCallbacks;
+import com.taichuan.http.download.DownloadHandler;
 import com.taichuan.uilibrary.avloading.AVLoadingUtil;
 import com.taichuan.uilibrary.avloading.LoadingStyle;
 
@@ -24,18 +25,27 @@ public final class RestClient {
     private static final String TAG = "RestClient";
     private final String URL;
     private final WeakHashMap<String, Object> PARAMS;
+    private final String DOWNLOAD_DIR;// 下载文件保存的文件夹
+    private final String EXTENSION;// 下载文件的拓展名
+    private final String NAME;// 下载文件保存的文件名（不包括路径）
+
     private final IRequest REQUEST;
     private final ISuccess SUCCESS;
     private final IFailure FAILURE;
     private final IError ERROR;
     private final RequestBody BODY;
-    private final Boolean IS_SHOW_LOADING;
+    private final boolean IS_SHOW_LOADING;
     private final Context CONTEXT;
+    @SuppressWarnings("SpellCheckingInspection")
+    private final RestClientBuilder.OnDownLoadProgress ONDOWNLOADPROGRESS;
     private final LoadingStyle LOADING_STYLE;
     private final Boolean LOADING_CANCELABLE;
 
     RestClient(String url,
                WeakHashMap<String, Object> params,
+               String downloadDir,
+               String extension,
+               String name,
                IRequest request,
                ISuccess success,
                IFailure failure,
@@ -44,9 +54,13 @@ public final class RestClient {
                boolean isShowLoading,
                Context context,
                LoadingStyle loadingStyle,
-               boolean isDialogCancelable) {
+               boolean isDialogCancelable,
+               RestClientBuilder.OnDownLoadProgress onDownLoadProgress) {
         this.URL = url;
         this.PARAMS = params;
+        this.DOWNLOAD_DIR = downloadDir;
+        this.EXTENSION = extension;
+        this.NAME = name;
         this.REQUEST = request;
         this.SUCCESS = success;
         this.FAILURE = failure;
@@ -56,6 +70,7 @@ public final class RestClient {
         this.CONTEXT = context;
         this.LOADING_STYLE = loadingStyle;
         this.LOADING_CANCELABLE = isDialogCancelable;
+        this.ONDOWNLOADPROGRESS = onDownLoadProgress;
     }
 
     public static RestClientBuilder builder() {
@@ -73,8 +88,17 @@ public final class RestClient {
             case POST:
                 call = RestCreator.getRestService().post(URL, PARAMS);
                 break;
+            case POST_RAW:
+                call = RestCreator.getRestService().postRaw(URL, BODY);
+                break;
             case DELETE:
                 call = RestCreator.getRestService().delete(URL, PARAMS);
+                break;
+            case PUT:
+                call = RestCreator.getRestService().put(URL, PARAMS);
+                break;
+            case PUT_RAW:
+                call = RestCreator.getRestService().putRaw(URL, BODY);
                 break;
         }
         if (call != null) {
@@ -86,7 +110,7 @@ public final class RestClient {
                     AVLoadingUtil.showLoading(CONTEXT, LOADING_STYLE, LOADING_CANCELABLE);
                 }
             }
-            Log.d(TAG, "request: HttpMethod=" + method.name() + "\nURL=" + URL + "\nPARAMS=" + PARAMS.toString());
+            Log.d(TAG, "request: HttpMethod=" + method.name() + "\nURL=" + URL + "\nPARAMS=" + (PARAMS == null ? "null" : PARAMS.toString()));
             call.enqueue(getRequestCallback());
         }
     }
@@ -97,54 +121,36 @@ public final class RestClient {
     }
 
     public final void post() {
-        request(HttpMethod.POST);
+        if (BODY == null) {
+            request(HttpMethod.POST);
+        } else {
+            if (!PARAMS.isEmpty()) {
+                throw new RuntimeException("params must be null!");
+            }
+            request(HttpMethod.POST_RAW);
+        }
     }
 
-//    private void request(HttpMethod method) {
-//        Call<String> call = null;
-//
-//        if (REQUEST != null) {
-//            REQUEST.onRequestStart();
-//        }
-//
-//        if (LOADER_STYLE != null) {
-//            LatteLoader.showLoading(CONTEXT, LOADER_STYLE);
-//        }
-//
-//        switch (method) {
-//            case GET:
-//                call = service.get(URL, PARAMS);
-//                break;
-//            case POST:
-//                call = service.post(URL, PARAMS);
-//                break;
-//            case POST_RAW:
-//                call = service.postRaw(URL, BODY);
-//                break;
-//            case PUT:
-//                call = service.put(URL, PARAMS);
-//                break;
-//            case PUT_RAW:
-//                call = service.putRaw(URL, BODY);
-//                break;
-//            case DELETE:
-//                call = service.delete(URL, PARAMS);
-//                break;
-//            case UPLOAD:
-//                final RequestBody requestBody =
-//                        RequestBody.create(MediaType.parse(MultipartBody.FORM.toString()), FILE);
-//                final MultipartBody.Part body =
-//                        MultipartBody.Part.createFormData("file", FILE.getName(), requestBody);
-//                call = service.upload(URL, body);
-//                break;
-//            default:
-//                break;
-//        }
-//
-//        if (call != null) {
-//            call.enqueue(getRequestCallback());
-//        }
-//    }
+    public final void put() {
+        if (BODY == null) {
+            request(HttpMethod.PUT);
+        } else {
+            if (!PARAMS.isEmpty()) {
+                throw new RuntimeException("params must be null!");
+            }
+            request(HttpMethod.PUT_RAW);
+        }
+    }
+
+    /**
+     * 下载文件<br>
+     * 如果是下载APK，下载完毕后会打开请求安装
+     */
+    public final void download() {
+        new DownloadHandler(URL, PARAMS, DOWNLOAD_DIR, EXTENSION, NAME, REQUEST,
+                SUCCESS, FAILURE, ERROR, ONDOWNLOADPROGRESS)
+                .handleDownload();
+    }
 
     private Callback<String> getRequestCallback() {
         return new RequestCallbacks(

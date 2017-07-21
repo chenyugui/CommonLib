@@ -70,6 +70,7 @@ public class TimeUtil {
     /**
      * 获取本周第一天0点的时间戳
      */
+
     public static long getTimeStampOfFirstDayOfWeek() {
         calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, 1);
@@ -83,6 +84,7 @@ public class TimeUtil {
     /**
      * 获取本周最后一天23点59分59秒的时间戳
      */
+
     public static long getTimeStamp24OfLastDayOfWeek() {
         calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, 7);
@@ -96,6 +98,7 @@ public class TimeUtil {
     /**
      * 获取今天0点的时间戳
      */
+
     public static long getTimeStampOfZeroOfToday() {
         calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -165,8 +168,6 @@ public class TimeUtil {
 
     /**
      * String变为date的yy-MM-dd
-     *
-     * @return
      */
     public static Date stringToyy_MM_dd(String str) {
         try {
@@ -180,8 +181,6 @@ public class TimeUtil {
 
     /**
      * String变为date的yy-MM-dd
-     *
-     * @return
      */
     public static Date stringToyyyy_MM_dd(String str) {
         Date date;
@@ -198,6 +197,7 @@ public class TimeUtil {
     /**
      * String 变为 date 的EEE
      */
+
     public static Date stringToEEE(String str) {
         Date date;
         try {
@@ -209,6 +209,7 @@ public class TimeUtil {
             return null;
         }
     }
+
 
     public static Date stringToyy_MM(String dateString) {
         Date date;
@@ -222,11 +223,11 @@ public class TimeUtil {
         }
     }
 
+
     public static Date stringtoHH_mm_ss(String dateString) {
         try {
             dateformat = new SimpleDateFormat("HH:mm:ss");//大写H为24小时制,小写为12小时
-            Date date = dateformat.parse(dateString);
-            return date;
+            return dateformat.parse(dateString);
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
@@ -234,139 +235,144 @@ public class TimeUtil {
 
     }
 
+
     public static String dateToyy_MM_dd_HH_mm_ss(Date date) {
         dateformat = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
-        String str_date = dateformat.format(date);
-        return str_date;
+        return dateformat.format(date);
     }
+
+
     public static String dateToyyyy_MM_dd_HH_mm_ss(Date date) {
         dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String str_date = dateformat.format(date);
-        return str_date;
+        return dateformat.format(date);
     }
+    public static String dateToyyyyMMdd_HHmmss(Date date) {
+        dateformat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        return dateformat.format(date);
+    }
+
 
     public static String dateToyy_MM_dd_HH_mm(Date date) {
         dateformat = new SimpleDateFormat("yy-MM-dd HH:mm");
-        String str_date = dateformat.format(date);
-        return str_date;
+        return dateformat.format(date);
     }
+
 
     public static String dateToyy_MM_dd_Enter_HH_mm(Date date) {
         dateformat = new SimpleDateFormat("yy-MM-dd\n HH:mm");
-        String str_date = dateformat.format(date);
-        return str_date;
+        return dateformat.format(date);
     }
 
     /**
      * date类型转换成String yy-MM-dd
      */
+
     public static String dateToyy_MM_dd(Date date) {
         dateformat = new SimpleDateFormat("yy-MM-dd");
-        String str_date = dateformat.format(date);
-        return str_date;
+        return dateformat.format(date);
     }
+
+
     public static String dateToMM月dd日(Date date) {
         dateformat = new SimpleDateFormat("MM月dd日");
-        String str_date = dateformat.format(date);
-        return str_date;
+        return dateformat.format(date);
     }
+
 
     public static String dateToyy(Date date) {
         SimpleDateFormat dateformat = new SimpleDateFormat("yy");
-        String str_date = dateformat.format(date);
-        return str_date;
+        return dateformat.format(date);
     }
+
 
     public static String dateToyyyy(Date date) {
         dateformat = new SimpleDateFormat("yyyy");
-        String str_date = dateformat.format(date);
-        return str_date;
+        return dateformat.format(date);
     }
+
 
     public static String dateToMM(Date date) {
         dateformat = new SimpleDateFormat("MM");
-        String str_date = dateformat.format(date);
-        return str_date;
+        return dateformat.format(date);
     }
+
+
     public static String dateToMMPotindd(Date date) {
         dateformat = new SimpleDateFormat("MM.dd");
-        String str_date = dateformat.format(date);
-        return str_date;
+        return dateformat.format(date);
     }
 
 
     public static String dateToWeekEEE(Date date) {
         dateformat = new SimpleDateFormat("EEE");
-        String str_week = dateformat.format(date);
-        return str_week;
+        return dateformat.format(date);
     }
+
+
     public static String dateToWeekEE(Date date) {
         dateformat = new SimpleDateFormat("EE");
-        String str_week = dateformat.format(date);
-        return str_week;
+        return dateformat.format(date);
     }
+
 
     public static String dateToHH_mm_ss(Date date) {
         dateformat = new SimpleDateFormat("HH:mm:ss");
-        String str_date = dateformat.format(date);
-        return str_date;
+        return dateformat.format(date);
     }
+
 
     public static String dateToHH_mm(Date date) {
         dateformat = new SimpleDateFormat("HH:mm");
-        String str_date = dateformat.format(date);
-        return str_date;
+        return dateformat.format(date);
     }
 
     /**
      * return  String型   15-07
      */
+
     public static String dateToyy_MM(Date date) {
         dateformat = new SimpleDateFormat("yy-MM");
-        String str_date = dateformat.format(date);
-        return str_date;
+        return dateformat.format(date);
     }
+
 
     public static String dateToyy年MM月(Date date) {
         dateformat = new SimpleDateFormat("yy年MM月");
-        String str_date = dateformat.format(date);
-        return str_date;
+        return dateformat.format(date);
     }
+
 
     public static String dateToyyyy年MM月dd日(Date date) {
         dateformat = new SimpleDateFormat("yyyy年MM月dd日");
-        String str_date = dateformat.format(date);
-        return str_date;
+        return dateformat.format(date);
     }
+
 
     public static String dateToyyyy_MM_dd(Date date) {
         dateformat = new SimpleDateFormat("yyyy-MM-dd");
-        String str_date = dateformat.format(date);
-        return str_date;
+        return dateformat.format(date);
     }
+
 
     public static String dateToyyyy_MMdd(Date date) {
         dateformat = new SimpleDateFormat("yyyy-MMdd");
-        String str_date = dateformat.format(date);
-        return str_date;
+        return dateformat.format(date);
     }
 
 
     /**
      * return  String型    31
      */
+
     public static String dateTodd(Date date) {
         dateformat = new SimpleDateFormat("dd");
-        String str_date = dateformat.format(date);
-        return str_date;
+        return dateformat.format(date);
     }
 
     /**
      * 将Date型的 yy-MM-dd转换成String型的星期几
-     *
-     * @param date
-     * @return
      */
+
     public static String dateyy_MM_ddToEEEE(Date date) {
         int int_week = date.getDay();
         String str_week = null;
@@ -384,10 +390,10 @@ public class TimeUtil {
     /**
      * 将Long型 毫秒 转换成 String 型 yy-MM-dd HH:mm:ss
      */
+
     public static String longToDate(Long millisecond) {
         SimpleDateFormat dateformat = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
-        String str_date = dateformat.format(millisecond);
-        return str_date;
+        return dateformat.format(millisecond);
     }
 
     /**
@@ -396,6 +402,7 @@ public class TimeUtil {
      *
      * @return
      */
+
     public static String secondTommss(int time) {
         int hour = time / 3600;
         int minute = time / 60;
@@ -419,11 +426,12 @@ public class TimeUtil {
     /**
      * 把yyyy-MM-dd HH:mm:ss 转化成 时间戳
      */
+
     public static String yy_MM_dd_HH_mm_ssToTimeStamp(String dataStr) {
         String timeStamp = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            timeStamp = sdf.parse("2016-07-07 14:29:54").getTime() + "";
+            timeStamp = sdf.parse(dataStr).getTime() + "";
         } catch (ParseException e) {
             e.printStackTrace();
         }

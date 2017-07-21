@@ -6,5 +6,9 @@ package com.taichuan.http;
 public enum HttpMethod {
     GET,
     POST,
-    DELETE
+    POST_RAW,
+    DELETE,
+    PUT,
+    PUT_RAW,
+    DOWNLOAD,
 }

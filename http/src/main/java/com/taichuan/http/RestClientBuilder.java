@@ -20,8 +20,15 @@ import okhttp3.RequestBody;
  */
 public final class RestClientBuilder {
 
-    private WeakHashMap<String, Object> mParams;
+    public interface OnDownLoadProgress {
+        void onProgressUpdate(long fileLength, int downLoadedLength);
+    }
+
     private String mUrl = null;
+    private WeakHashMap<String, Object> mParams;
+    private String mDownLoadDir;// 下载文件保存的文件夹
+    private String mExtension;// 下载文件的拓展名
+    private String mFileName;// 下载文件的全名（文件名+.+拓展名）
     private IRequest mIRequest = null;
     private ISuccess mISuccess = null;
     private IFailure mIFailure = null;
@@ -30,6 +37,7 @@ public final class RestClientBuilder {
     private boolean isShowLoading = false;
     private Context mContext;
     private LoadingStyle mLoadingStyle = null;
+    private OnDownLoadProgress mOnDownLoadProgress = null;
     private boolean mLoadingCancelable = AVLoadingUtil.default_cancelable;
 
 
@@ -55,6 +63,36 @@ public final class RestClientBuilder {
         return this;
     }
 
+    /**
+     * 下载文件要保存的目录
+     */
+    public final RestClientBuilder dir(String dir) {
+        this.mDownLoadDir = dir;
+        return this;
+    }
+
+    /**
+     * 下载的文件的扩展名
+     */
+    public final RestClientBuilder extension(String extension) {
+        this.mExtension = extension;
+        return this;
+    }
+
+    /**
+     * 下载的文件的文件名（名称+ . + 扩展名）。<br>
+     * 此方法会覆盖掉 {@link #extension(String extension)}
+     */
+    public final RestClientBuilder fileName(String fileName) {
+        this.mFileName = fileName;
+        return this;
+    }
+
+    /**
+     * 传入原始数据
+     *
+     * @param raw 原始数据字符串
+     */
     public final RestClientBuilder raw(String raw) {
         this.mBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), raw);
         return this;
@@ -79,6 +117,15 @@ public final class RestClientBuilder {
         this.mIError = iError;
         return this;
     }
+
+    /**
+     * 传入下载文件进度回调
+     */
+    public final RestClientBuilder onDownLoadProgress(OnDownLoadProgress onDownLoadProgress) {
+        this.mOnDownLoadProgress = onDownLoadProgress;
+        return this;
+    }
+
 
     /**
      * 配置请求中的对话框
@@ -124,8 +171,14 @@ public final class RestClientBuilder {
 
 
     public final RestClient build() {
+        if (mParams == null) {
+            mParams = new WeakHashMap<>();
+        }
         return new RestClient(mUrl,
                 mParams,
+                mDownLoadDir,
+                mExtension,
+                mFileName,
                 mIRequest,
                 mISuccess,
                 mIFailure,
@@ -134,6 +187,7 @@ public final class RestClientBuilder {
                 isShowLoading,
                 mContext,
                 mLoadingStyle,
-                mLoadingCancelable);
+                mLoadingCancelable,
+                mOnDownLoadProgress);
     }
 }
