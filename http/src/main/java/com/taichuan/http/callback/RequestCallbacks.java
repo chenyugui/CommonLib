@@ -17,7 +17,7 @@ public final class RequestCallbacks implements Callback<String> {
     /**
      * 请求时是否有伴随LoadingDialog
      */
-    private final Boolean IS_WITH_LOADING;
+    private final boolean IS_WITH_LOADING;
 
     public RequestCallbacks(IRequest request, ISuccess success, IFailure failure, IError error, boolean isWithLoading) {
         this.REQUEST = request;
