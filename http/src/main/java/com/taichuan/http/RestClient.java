@@ -116,10 +116,12 @@ public final class RestClient {
     }
 
 
+    @SuppressWarnings("unused")
     public final void get() {
         request(HttpMethod.GET);
     }
 
+    @SuppressWarnings("unused")
     public final void post() {
         if (BODY == null) {
             request(HttpMethod.POST);
@@ -131,6 +133,7 @@ public final class RestClient {
         }
     }
 
+    @SuppressWarnings("unused")
     public final void put() {
         if (BODY == null) {
             request(HttpMethod.PUT);
