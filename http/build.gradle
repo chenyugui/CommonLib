@@ -35,7 +35,7 @@ dependencies {
     // 依赖RxJava2
     compile 'io.reactivex.rxjava2:rxjava:2.1.2'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'// RxJava2集合Retrofit2需要的adapter依赖
     // 依赖uiLibrary(因为要用到AVLoader)
     compile project(':uilibrary')
     // 依赖utils

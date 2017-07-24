@@ -145,14 +145,27 @@ public final class RestClient {
         }
     }
 
+    @SuppressWarnings("unused")
+    public final void delete() {
+        request(HttpMethod.DELETE);
+    }
+
     /**
      * 下载文件<br>
      * 如果是下载APK，下载完毕后会打开请求安装
      */
     public final void download() {
-        new DownloadHandler(URL, PARAMS, DOWNLOAD_DIR, EXTENSION, NAME, REQUEST,
-                SUCCESS, FAILURE, ERROR, ONDOWNLOADPROGRESS)
-                .handleDownload();
+        new DownloadHandler(
+                URL,
+                PARAMS,
+                DOWNLOAD_DIR,
+                EXTENSION,
+                NAME,
+                REQUEST,
+                SUCCESS,
+                FAILURE,
+                ERROR,
+                ONDOWNLOADPROGRESS).handleDownload();
     }
 
     private Callback<String> getRequestCallback() {

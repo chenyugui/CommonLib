@@ -15,6 +15,9 @@ import com.taichuan.mvplib.presenter.MvpBasePresenter;
 import com.taichuan.mvplib.view.support.MySupportActivity;
 import com.taichuan.mvplib.view.viewimpl.ViewBaseInterface;
 
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+
 /**
  * Created by gui on 2017/5/27.
  * activity View层基类
@@ -28,6 +31,11 @@ public abstract class MvpBaseActivity<V extends ViewBaseInterface, P extends Mvp
     protected P mPresenter;
     private Dialog tipDialog;
     private Toast mToast;
+
+    /**
+     * 订阅切断者容器
+     */
+    private CompositeDisposable compositeDisposable;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -46,9 +54,20 @@ public abstract class MvpBaseActivity<V extends ViewBaseInterface, P extends Mvp
         if (mPresenter != null) {
             mPresenter.detachView();
         }
+        // 切断所有订阅
+        if (compositeDisposable != null) {
+            compositeDisposable.clear();
+        }
     }
 
     protected abstract P createPresenter();
+
+    public void addDisposable(Disposable disposable) {
+        if (compositeDisposable == null) {
+            compositeDisposable = new CompositeDisposable();
+        }
+        compositeDisposable.add(disposable);
+    }
 
     @SuppressWarnings({"unchecked", "unused"})
     protected <T extends View> T findView(int viewID) {

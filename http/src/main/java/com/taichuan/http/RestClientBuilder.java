@@ -41,7 +41,7 @@ public final class RestClientBuilder {
     private boolean mLoadingCancelable = AVLoadingUtil.default_cancelable;
 
 
-    public RestClientBuilder() {
+    RestClientBuilder() {
     }
 
     public final RestClientBuilder url(String url) {
@@ -98,7 +98,7 @@ public final class RestClientBuilder {
         return this;
     }
 
-    public final RestClientBuilder onRequest(IRequest iRequest) {
+    public final RestClientBuilder request(IRequest iRequest) {
         this.mIRequest = iRequest;
         return this;
     }

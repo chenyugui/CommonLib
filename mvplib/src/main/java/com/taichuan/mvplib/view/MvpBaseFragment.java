@@ -12,6 +12,9 @@ import com.taichuan.mvplib.presenter.MvpBasePresenter;
 import com.taichuan.mvplib.view.support.MySupportFragment;
 import com.taichuan.mvplib.view.viewimpl.ViewBaseInterface;
 
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+
 /**
  * Created by gui on 2017/5/28.
  * fragment View层基类
@@ -25,6 +28,10 @@ public abstract class MvpBaseFragment<V extends ViewBaseInterface, P extends Mvp
     private Dialog tipDialog;
     private Toast mToast;
     protected View rootView;
+    /**
+     * 订阅切断者容器
+     */
+    private CompositeDisposable compositeDisposable;
 
 
     @SuppressWarnings("unchecked")
@@ -35,7 +42,7 @@ public abstract class MvpBaseFragment<V extends ViewBaseInterface, P extends Mvp
         mPresenter = createPresenter();
         // Presenter与View建立关联
         if (mPresenter != null) {
-            mPresenter.attachView((V) this);
+            mPresenter.attachView(this);
         }
     }
 
@@ -46,9 +53,21 @@ public abstract class MvpBaseFragment<V extends ViewBaseInterface, P extends Mvp
         if (mPresenter != null) {
             mPresenter.detachView();
         }
+        // 切断所有订阅
+        if (compositeDisposable != null) {
+            compositeDisposable.clear();
+        }
     }
 
     protected abstract P createPresenter();
+
+    @Override
+    public void addDisposable(Disposable disposable) {
+        if (compositeDisposable == null) {
+            compositeDisposable = new CompositeDisposable();
+        }
+        compositeDisposable.add(disposable);
+    }
 
     @SuppressWarnings({"unchecked", "unused"})
     protected <T extends View> T findView(int viewID) {
