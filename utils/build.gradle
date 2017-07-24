@@ -30,6 +30,4 @@ dependencies {
     compile "com.android.support:appcompat-v7:${SUPPORT_LIBRARY}"
     // 换行
     testCompile 'junit:junit:4.12'
-    // 依赖global（用到它的themeColor）
-//    compile project(':global')
 }

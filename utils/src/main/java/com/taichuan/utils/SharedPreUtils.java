@@ -2,66 +2,56 @@ package com.taichuan.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 /**
- * Created by gui on 2016/7/6.
- * SharePreference工具类，请在application onCreate时调用init方法
+ * Created by gui on 2017/7/24.
+ * SharePreference工具类 <br>
+ * 提示： <br>
+ * Activity.getPreferences(int mode)生成Activity名.xml，用于Activity内部存储; <br>
+ * PreferenceManager.getDefaultSharedPreferences(Context)生成 包名_preferences.xml; <br>
+ * Context.getSharedPreference(String name,int mode)生成name.xml <br>
  */
 public class SharedPreUtils {
-    private static String SPNAME;
-    private static SharedPreUtils mSPContext;
-    public Context mContext;
+    private static final SharedPreferences PREFERENCES = PreferenceManager.getDefaultSharedPreferences();
 
 
-    public static SharedPreUtils getInstance() {
-
-        if (mSPContext == null) {
-            mSPContext = new SharedPreUtils();
-        }
-        return mSPContext;
+    private static SharedPreferences getAppPreference() {
+        return PREFERENCES;
     }
 
     private SharedPreUtils() {
-
     }
 
-    private SharedPreUtils(Context context) {
-        mContext = context;
-        mSPContext = this;
+//    public void init(Context context, String spName) {
+//        mContext = context.getApplicationContext();
+//        mSpName = spName;
+//    }
 
+
+    @SuppressWarnings("unused")
+    public static void saveParams(String key, String value) {
+        getAppPreference()
+                .edit()
+                .putString(key, value)
+                .apply();
     }
 
-    public static void init(Context context, String spName) {
-        mSPContext = new SharedPreUtils(context);
-        SPNAME = spName;
+    @SuppressWarnings("unused")
+    public void removeParams(String key) {
+        getAppPreference()
+                .edit()
+                .remove(key)
+                .apply();
     }
 
-    public void savePamars(String key, String value) {
-        SharedPreferences sp = mContext.getSharedPreferences(SPNAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString(key, value);
-        editor.apply();
+    @SuppressWarnings("unused")
+    public String getParams(String key) {
+        return getAppPreference().getString(key, "");
     }
 
-
-    public void removePamars(String key) {
-        SharedPreferences sp = mContext.getSharedPreferences(SPNAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.remove(key);
-        editor.apply();
-    }
-
-
-    public String getPamars(String key) {
-
-        SharedPreferences sp = mContext.getSharedPreferences(SPNAME, Context.MODE_PRIVATE);
-        return sp.getString(key, "");
-    }
-
-    public String getPamars(String key, String defaultValue) {
-
-        SharedPreferences sp = mContext.getSharedPreferences(SPNAME, Context.MODE_PRIVATE);
-
-        return sp.getString(key, defaultValue);
+    @SuppressWarnings("unused")
+    public String getParams(String key, String defaultValue) {
+        return getAppPreference().getString(key, defaultValue);
     }
 }
